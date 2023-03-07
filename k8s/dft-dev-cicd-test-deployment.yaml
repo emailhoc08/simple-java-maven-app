@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: dft-dev-cicd-test-deployment
+ labels:
+   app: dft-dev-cicd-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dft-dev-cicd-test
+  template:
+    metadata:
+      labels:
+        app: dft-dev-cicd-test
+    spec:
+     containers:
+     - name: dft-dev-cicd-test
+       image: 600694340247.dkr.ecr.eu-central-1.amazonaws.com/dft-dev-cicd-test:latest
+       resources:
+         limits:
+           memory: "8096Mi"
+           cpu: "2"
+         requests:
+           memory: "2048Mi"
+           cpu: "1" 
+       ports:
+       - containerPort: 8080
