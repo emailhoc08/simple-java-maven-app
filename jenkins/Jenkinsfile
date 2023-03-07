@@ -26,7 +26,7 @@ pipeline {
         //             docker build -t 600694340247.dkr.ecr.eu-central-1.amazonaws.com/cicd-test:latest .
         //         """
         //     }
-        }
+        //}
         // stage('Run')
         // {
         //     agent {
