@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 pipeline {
      environment {
       JAVA_TOOL_OPTIONS = '-Duser.home=/root'
@@ -35,3 +36,50 @@ pipeline {
 } 
 
 
+=======
+pipeline {
+     environment {
+      JAVA_TOOL_OPTIONS = '-Duser.home=/root'
+    }
+    agent none
+    stages {
+        stage('Build Java') { 
+            agent {
+                docker {
+                    image 'maven:3.9.0-eclipse-temurin-11' 
+                    args '-v /var/jenkins_home:/root' 
+                }
+            }
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
+        }
+        stage('Build Docker')
+          
+        {
+             agent {
+                   label 'master'
+                    }
+            steps {
+                sh """
+                    docker build -t javaapp .
+                """
+            }
+        }
+        stage('Run')
+          
+        {
+            agent {
+                    label 'master'
+               } 
+            steps {
+                sh """
+                    docker run javaapp
+                """
+            }
+        }
+    }
+} 
+
+
+>>>>>>> 9305c1a6a8c4b0d397a7f5923a5545a2a5656e82
