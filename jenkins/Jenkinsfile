@@ -2,31 +2,33 @@ pipeline {
      environment {
       JAVA_TOOL_OPTIONS = '-Duser.home=/root'
     }
-    agent {
-        docker {
-            image 'maven:3.9.0-eclipse-temurin-11' 
-            args '-v /var/jenkins_home:/root' 
-        }
-    }
+    
     stages {
-        stage('Build') { 
+        stage('Build Java') { 
+            agent {
+                docker {
+                    image 'maven:3.9.0-eclipse-temurin-11' 
+                    args '-v /var/jenkins_home:/root' 
+                }
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        stage('Test') {
+        stage('Build Docker')
+        {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
+                sh """
+                    docker build -t javaapp .
+                """
             }
         }
-        stage('Deliver') { 
+        stage('Run')
+        {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
+                sh """
+                    docker run javaapp
+                """
             }
         }
     }
