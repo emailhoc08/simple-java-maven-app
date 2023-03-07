@@ -23,31 +23,31 @@ pipeline {
                     }
             steps {
                 sh """
-                    docker build -t javaapp .
+                    docker build -t 600694340247.dkr.ecr.eu-central-1.amazonaws.com/cicd-test:latest .
                 """
             }
         }
-        stage('Run')
+        // stage('Run')
+        // {
+        //     agent {
+        //             label 'master'
+        //        } 
+        //     steps {
+        //         sh """
+        //             docker run javaapp
+        //         """
+        //     }
+        // }
+        stage('Build and Push')
         {
             agent {
                     label 'master'
                } 
             steps {
-                sh """
-                    docker run javaapp
-                """
-            }
-        }
-        stage('Push')
-        {
-            agent {
-                    label 'master'
-               } 
-            steps {
-                REPOTAGI = 'cicd-test:latest'
-                    echo REPOTAGI
-                    docker.withRegistry('600694340247.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:dft-dev') {
-                    docker.image(REPOTAGI).push()
+                    docker.withRegistry('600694340247.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:dft-dev') 
+                    {
+                        docker.build('cicd-test').push('latest')
+
                     }
             }
         }
