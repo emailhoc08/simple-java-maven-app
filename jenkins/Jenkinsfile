@@ -18,7 +18,9 @@ pipeline {
         stage('Build Docker')
           
         {
-             agent { master } 
+             agent {
+                   label 'master'
+                    }
             steps {
                 sh """
                     docker build -t javaapp .
@@ -28,7 +30,9 @@ pipeline {
         stage('Run')
           
         {
-            gent { master }  
+            agent {
+                    label 'master'
+               } 
             steps {
                 sh """
                     docker run javaapp
