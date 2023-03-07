@@ -25,4 +25,4 @@ spec:
            memory: "2048Mi"
            cpu: "1" 
        ports:
-       - containerPort: 8080
+       - containerPort: 3333
